@@ -15,27 +15,35 @@ int main (int argc, char * argv[])
 
 	for (int i = 0; i < size_array; i++) {
 		array[i] = getrand(0,100000);
-        printf ("array[%d]= %d ",i,array[i]);
+//        printf ("array[%d]= %d ",i,array[i]);
 	}
 
-    for(int i = 0 ; i < size_array - 1; i++) {
-        // сравниваем два соседних элемента.
-        for(int j = 0 ; j < size_array - i - 1 ; j++) {
-            if(array[j] > array[j+1]) {
-                // если они идут в неправильном порядке, то
-                //  меняем их местами.
-                int tmp = array[j];
-                array[j] = array[j+1];
-                array[j+1] = tmp;
-            }
-        }
-    }
+	double time = wtime();
 
-    for (int i = 0; i < size_array; i++) {
-    printf ("array[%d]= %d ",i,array[i]);
-	}
+    	for(int i = 0 ; i < size_array - 1; i++) {
+        	// сравниваем два соседних элемента.
+        	for(int j = 0 ; j < size_array - i - 1 ; j++) {
+            		if(array[j] > array[j+1]) {
+                	// если они идут в неправильном порядке, то
+                	//  меняем их местами.
+                	int tmp = array[j];
+                	array[j] = array[j+1];
+                	array[j+1] = tmp;
+            		}
+        	}
+    	}
+
+
+//    for (int i = 0; i < size_array; i++) {
+//    printf ("array[%d]= %d ",i,array[i]);
+//	}
+
+	time = wtime() - time;
+
+	FILE * tb;
+	tb = fopen ("tb.txt", "a");
+	fprintf (tb,"%d %.6f\n",size_array, time);
 
 	free(array);
-
 	return EXIT_SUCCESS;
 }
