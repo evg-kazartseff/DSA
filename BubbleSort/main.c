@@ -41,7 +41,7 @@ int main (int argc, char * argv[])
 	time = wtime() - time;
 
 	FILE * tb;
-	tb = fopen ("tb.txt", "a");
+	tb = fopen ("bubblesort.dat", "a");
 	fprintf (tb,"%d %.6f\n",size_array, time);
 
 	free(array);
