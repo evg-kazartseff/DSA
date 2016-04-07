@@ -53,11 +53,12 @@ int main(int argc, char **argv)
 	for (i = 2; i <= size; i++) {
 		bstree_add(tree,buf[i-1],i);
 	}
+	int hash_mode = 0;
 	//создание таблицы
 	struct listnode *hash;
 	hashtab_init(hashtab);
 	for (i = 1; i <= size; i++) {
-		hashtab_add(hashtab,buf[i-1],i);
+		hashtab_add(hashtab,buf[i-1],i,hash_mode);
 	}
 
 	//test 1 lookup--
@@ -73,12 +74,12 @@ int main(int argc, char **argv)
 	}
 	
 	time = wtime();
-	hash = hashtab_lookup(hashtab,buf[rand_i]);
+	hash = hashtab_lookup(hashtab,buf[rand_i],hash_mode);
 	time = wtime() - time;
 	FILE *tb2;
-    tb2 = fopen("../test/hashtab_lookup.dat", "a");
+    tb2 = fopen("../test/hashtab_lookup_KPHash.dat", "a");
     fprintf(tb2, "%d %.8f\n", size, time);
-	printf("HashTab: %s, %d %.8f\n",hash->key, hash->value, time);
+	printf("HashTab (KPHash): %s, %d %.8f\n",hash->key, hash->value, time);
 	//--
 	
 	//test2 add--
@@ -92,17 +93,30 @@ int main(int argc, char **argv)
     printf ("BSTree: %s, %d %.8f\n",buf[size],size+1, time);
     
     time = wtime();
-    hashtab_add(hashtab,buf[size],size+1);
+    hashtab_add(hashtab,buf[size],size+1,hash_mode);
     time = wtime() - time;
     FILE *tb4;
     tb4 = fopen("../test/hashtab_add.dat", "a");
     fprintf(tb4, "%d %.8f\n", size, time);
-    printf("HashTab: %s, %d %.8f\n",buf[size], size+1, time);
+    printf("HashTab (KPHash): %s, %d %.8f\n",buf[size], size+1, time);
 	//--
 	
-	
-	
-	
+	//test3 hash_mode lookup--
+	printf("lookup\n");
+	hash_mode = 1;
+	struct listnode *hash_tb;
+	hashtab_init(hashtab);
+	for (i = 1; i <= size; i++) {
+		hashtab_add(hashtab,buf[i-1],i,hash_mode);
+	}
+	time = wtime();
+	hash_tb = hashtab_lookup(hashtab,buf[rand_i],hash_mode);
+	time = wtime() - time;
+	FILE *tb5;
+    tb5 = fopen("../test/hashtab_lookup_ELFHash.dat", "a");
+    fprintf(tb5, "%d %.8f\n", size, time);
+	printf("HashTab (ELFHash): %s, %d %.8f\n",hash_tb->key, hash_tb->value, time);
+	//--
 	
 	return 0;
 }

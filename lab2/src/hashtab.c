@@ -10,6 +10,19 @@ unsigned int hashtab_hash(char *key)
 	return h % HASHTAB_SIZE;
 }
 
+unsigned int ELFHash(char *key)
+{
+	unsigned int h = 0, g;
+	while (*key) {
+		h = (h << 4) + *key++;
+		g = h & 0xf0000000L;
+		if (g)
+			h ^= g >> 24;
+		h &= ~g;
+	}
+	return h % HASHTAB_SIZE;
+}
+
 void hashtab_init(struct listnode **hashtab)
 {
 	int i;
@@ -18,10 +31,16 @@ void hashtab_init(struct listnode **hashtab)
 	}
 }
 
-void hashtab_add(struct listnode **hashtab, char *key, int value)
+void hashtab_add(struct listnode **hashtab, char *key, int value, int f_hash)
 {
 	struct listnode *node;
-	int index = hashtab_hash(key);
+	int index;
+	if (f_hash == 0) {
+		index = hashtab_hash(key);
+	}
+	else {
+		index = ELFHash(key);
+	}
 	// Вставка в начало списка
 	node = malloc(sizeof(*node));
 	if (node != NULL) {
@@ -32,12 +51,17 @@ void hashtab_add(struct listnode **hashtab, char *key, int value)
 	}
 }
 
-struct listnode *hashtab_lookup(struct listnode **hashtab, char *key)
+struct listnode *hashtab_lookup(struct listnode **hashtab, char *key, int f_hash)
 {
 	int index;
 	struct listnode *node;
 	
-	index = hashtab_hash(key);
+	if (f_hash == 0) {
+		index = hashtab_hash(key);
+	}
+	else {
+		index = ELFHash(key);
+	} 
 	for (node = hashtab[index]; node != NULL; node = node->next) {
 		if (strcmp(node->key, key) == 0)
 			return node;
@@ -45,11 +69,16 @@ struct listnode *hashtab_lookup(struct listnode **hashtab, char *key)
 	return NULL;
 }
 
-void hashtab_delete(struct listnode **hashtab, char *key)
+void hashtab_delete(struct listnode **hashtab, char *key, int f_hash)
 {
 	int index;
 	struct listnode *p, *prev = NULL;
-	index = hashtab_hash(key);
+	if (f_hash == 0) {
+		index = hashtab_hash(key);
+	}
+	else {
+		index = ELFHash(key);
+	}
 	for (p = hashtab[index]; p != NULL; p = p->next) {
 		if (strcmp(p->key, key) == 0) {
 			if (prev == NULL)
