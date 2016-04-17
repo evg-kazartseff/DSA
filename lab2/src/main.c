@@ -7,7 +7,7 @@
 #include <unistd.h> 
 
 #define dictionary 570000
-#define exp 2
+#define exp 100
 #define HASHTAB_SIZE 128
 
 int main(int argc, char **argv)
@@ -118,27 +118,34 @@ int main(int argc, char **argv)
 	
 	//test2 add--
 	printf("add\n");
-	time_exp = wtime();
-	bstree_add(tree,buf[size],size+1);
-	time_exp = wtime() - time_exp;
-	printf("bstree_add %s %d\n",buf[size],size+1);
+	double add_time_bstree = 0;
+	double add_time_hashtab = 0;
+	for (count = 1; count <= exp; count++) {
+	    time_exp = wtime();
+	    bstree_add(tree,buf[size+i],size+1+i);
+	    time_exp = wtime() - time_exp;
+	    add_time_bstree = add_time_bstree + time_exp;
+	    printf("bstree_add %s %d\n",buf[size+i],size+1+i);
 	    
+	    time_exp = wtime();
+	    hashtab_add(hashtab,buf[size+i],size+1+i,hash_mode);
+	    time_exp = wtime() - time_exp;
+	    add_time_hashtab = add_time_hashtab + time_exp;
+	    printf("hashtab(KPHash)_add %s %d\n",buf[size+i],size+1+i);
+	}
+	add_time_bstree = add_time_bstree/exp;
 	FILE *tb3;
 	tb3 = fopen("../test/bstree_add.dat", "a");
-	fprintf(tb3, "%d %.8f\n", size, time_exp);
-	printf ("BSTree: %s, %d %.8f\n",buf[size],size+1, time_exp);	    
-	
-	time_exp = wtime();
-	hashtab_add(hashtab,buf[size],size+1,hash_mode);
-	time_exp = wtime() - time_exp;
-	printf("hashtab(KPHash)_add %s %d\n",buf[size],size+1);
+	fprintf(tb3, "%d %.8f\n", size, add_time_bstree);
+	printf ("BSTree: %s, %d %.8f\n",buf[size],size+1, add_time_bstree);	    
 
+	add_time_hashtab = add_time_hashtab/exp;
 	FILE *tb4;
 	tb4 = fopen("../test/hashtab_add.dat", "a");
-	fprintf(tb4, "%d %.8f\n", size, time_exp);
-	printf("HashTab (KPHash): %s, %d %.8f\n",buf[size], size+1, time_exp);
+	fprintf(tb4, "%d %.8f\n", size, add_time_hashtab);
+	printf("HashTab (KPHash): %s, %d %.8f\n",buf[size], size+1, add_time_hashtab);
 	//--
-	
+
 	//test3 hash_mode lookup--
 	printf("lookup\n");
 	double lookup_time_hashtab_ELFHash = 0;
