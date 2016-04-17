@@ -122,16 +122,16 @@ int main(int argc, char **argv)
 	double add_time_hashtab = 0;
 	for (count = 1; count <= exp; count++) {
 	    time_exp = wtime();
-	    bstree_add(tree,buf[size+i],size+1+i);
+	    bstree_add(tree,buf[size+count],size+1+count);
 	    time_exp = wtime() - time_exp;
 	    add_time_bstree = add_time_bstree + time_exp;
-	    printf("bstree_add %s %d\n",buf[size+i],size+1+i);
+	    printf("bstree_add %s %d\n",buf[size+count],size+1+count);
 	    
 	    time_exp = wtime();
-	    hashtab_add(hashtab,buf[size+i],size+1+i,hash_mode);
+	    hashtab_add(hashtab,buf[size+count],size+1+count,hash_mode);
 	    time_exp = wtime() - time_exp;
 	    add_time_hashtab = add_time_hashtab + time_exp;
-	    printf("hashtab(KPHash)_add %s %d\n",buf[size+i],size+1+i);
+	    printf("hashtab(KPHash)_add %s %d\n",buf[size+count],size+1+count);
 	}
 	add_time_bstree = add_time_bstree/exp;
 	FILE *tb3;
