@@ -5,10 +5,10 @@
 #include <string.h>
 
 struct bstree {
-	char *key; /* Ключ */
-	int value; /* Данные */
-	struct bstree *left;
-	struct bstree *right;
+    char *key;                  /* Ключ */
+    int value;                  /* Данные */
+    struct bstree *left;
+    struct bstree *right;
 };
 
 struct bstree *bstree_create(char *key, int value);
