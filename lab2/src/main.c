@@ -8,7 +8,7 @@
 
 #define dictionary 570000
 #define exp 100
-#define HASHTAB_SIZE 128
+#define HASHTAB_SIZE 2047
 
 int main(int argc, char **argv)
 {
@@ -63,9 +63,11 @@ int main(int argc, char **argv)
     for (i = 0; i < HASHTAB_SIZE; i++) {
         if (hashtab[i] != NULL) {
             hash_node = hashtab[i];
-			while (hash_node->next != NULL) {
-				coliz++;
-			}
+            while (hash_node->next != NULL) {
+                //printf("hashtab %d %s\n",i, hash_node->key);
+                coliz++;
+                hash_node = hash_node->next;
+            }
         }
     }
     printf("coliz(KPHash) %d\n", coliz);
@@ -162,10 +164,11 @@ int main(int argc, char **argv)
     for (i = 0; i < HASHTAB_SIZE; i++) {
         if (hashtab[i] != NULL) {
             hash_node = hashtab[i];
-	    //printf("hashtab %d %s\n",i, hash_node->key);
-	    while (hash_node->next != NULL) {
-		coliz++;
-	    }
+            while (hash_node->next != NULL) {
+                //printf("hashtab %d %s\n",i, hash_node->key);
+                coliz++;
+                hash_node = hash_node->next;
+            }
         }
     }
     printf("coliz(ELFHash) %d\n", coliz);

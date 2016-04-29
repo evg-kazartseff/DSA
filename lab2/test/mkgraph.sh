@@ -27,17 +27,17 @@ set output 'lookup_bstree.png'
 plot "./bstree_lookup.dat" using 1:2 title "bstree" with linespoints ls 1
 
 set output 'lookup_KPHash.png'
-plot "./hashtab_lookup_KPHash.dat" using 1:2 title "KPHash_lookup" with linespoints ls 2
+plot "./hashtab_lookup_KPHash.dat" using 1:2 title "KPHash lookup" with linespoints ls 2
 
 set output 'bstree_add.png'
-plot "./bstree_add.dat" using 1:2 title "bstree_add" with linespoints ls 1
+plot "./bstree_add.dat" using 1:2 title "bstree add" with linespoints ls 1
 
 set output 'hashtab_add.png'
-plot "./hashtab_add.dat" using 1:2 title "hashtab_add" with linespoints ls 2
+plot "./hashtab_add.dat" using 1:2 title "hashtab add" with linespoints ls 2
 
 set output 'lookup_ELFHash.png'
-plot "./hashtab_lookup_ELFHash.dat" using 1:2 title "ELFHash_lookup" with linespoints ls 2
+plot "./hashtab_lookup_ELFHash.dat" using 1:2 title "ELFHash lookup" with linespoints ls 2
 
 set output 'lookup_hashtab.png'
-plot "./hashtab_lookup_ELFHash.dat" using 1:2 title "lookup_ELFHash" with linespoints ls 1,\
-     "./hashtab_lookup_KPHash.dat" using 1:2 title "lookup_KPHash" with linespoints ls 2,\
+plot "./hashtab_lookup_ELFHash.dat" using 1:2 title "lookup ELFHash" with linespoints ls 1,\
+     "./hashtab_lookup_KPHash.dat" using 1:2 title "lookup KPHash" with linespoints ls 2,\

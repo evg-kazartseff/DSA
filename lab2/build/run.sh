@@ -5,3 +5,6 @@ do
 ./lab2 "$count"
 sleep 2
 done 
+
+cd ../test/
+./mkgraph.sh
