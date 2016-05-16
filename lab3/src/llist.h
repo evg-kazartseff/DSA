@@ -8,4 +8,6 @@ struct listnode {
     struct listnode *next; /* Next node */
 };
 
+struct listnode *list_createnode(int value);
+
 #endif

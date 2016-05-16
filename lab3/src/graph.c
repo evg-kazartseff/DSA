@@ -6,7 +6,7 @@ struct graph *graph_create(int nvertices)
     struct graph *g;
     g = malloc(sizeof(*g));
     g->nvertices = nvertices;
-    g->visited = malloc(sizeof(int) * nvertices);
+    g->visited = malloc(sizeof(int) * (nvertices + 1));
     g->m = (int **) malloc(nvertices * sizeof(int *));
     if (g->m != NULL) {
         for (int i = 0; i < nvertices; i++) {
@@ -85,4 +85,98 @@ void graph_bfs(struct graph *g, int v)
 	}
     }
     queue_free(q);
+}
+
+int graph_nvertices(struct graph *g)
+{
+    return g->nvertices;
+}
+
+struct path *Serch_Shortest_Path(struct graph *g, int src, int dest)
+{
+    
+    struct g_path *p;
+    p = malloc(sizeof(*p));
+    p->path = malloc(g->nvertices * sizeof(int));
+    
+    int *prev = malloc((g->nvertices + 1) * sizeof(int));
+    int *d = malloc((g->nvertices + 1) * sizeof(int));
+    
+    ShortestPath_Dijekstra(g, src, d, prev);
+    
+    int i = dest;
+    p->pathlen = 1;
+    while (i != src) {
+	p->pathlen = p->pathlen + 1;
+	i = prev[i];
+    }
+    
+    int j = 0;
+    i = dest;
+    
+    while (i != src) {
+	p->path[p->pathlen - j] = i;
+	i = prev[i];
+	j = j + 1;
+    }
+    
+    free(prev);
+    free(d);
+    
+    return p;
+}
+
+void ShortestPath_Dijekstra(struct graph *g, int src, int *d, int *prev)
+{
+    struct heap *prio_q;
+    prio_q = heap_create(g->nvertices);
+    
+    int v;
+    
+    for (v = 1; v <= g->nvertices; v++) {
+	if (v != src) {
+	    g->visited[v] = 0;
+	    d[v] = INT_MAX;
+	    prev[v] = -1;
+	    heap_insert(prio_q, d[v], v);
+	}
+    }
+    
+    d[src] = 0;
+    prev[src] = -1;
+    g->visited[src] = 0;
+    heap_insert(prio_q, d[src], src);
+    
+    
+   /* for (v = 1; v <= g->nvertices; v++) {
+	    printf("add in idx %d\n", prio_q->Vtoidx[v]);
+	    printf("ver %d way %d\n", v, prio_q->nodes[prio_q->Vtoidx[v]].key);
+    }*/
+    
+    struct heapnode node;
+    
+    for (v = 1; v <= g->nvertices; v++) {
+	node = heap_extract_min(prio_q);
+	printf("vertices %d\n\n", node.value);
+	g->visited[node.value] = 1;
+	
+	for (int u  = 1; u <= g->nvertices; u++) {
+	    printf ("sm vert %d\n", u);
+	    int way = graph_get_edge(g, v, u);
+	    printf("way v=%d - u=%d == %d\n", v, u, way);
+	    printf("visited sm vert %d\n\n", g->visited[u]);
+	    if ((way != 0) && (g->visited[u] != 1)) {
+		if (d[v] + way < d[u]) {
+		    d[u] = d[v] + way;
+		    printf("du do %d\n", prio_q->nodes[prio_q->Vtoidx[u]].key);
+		    heap_decrease_key(prio_q, u, d[u]);
+		    printf("v %d in idx %d\n", u, prio_q->Vtoidx[u]);
+		    printf("du posle %d\n", prio_q->nodes[prio_q->Vtoidx[u]].key);
+		    printf("v=%d - u=%d == d[u] = %d\n\n",v, u, d[u]);		    
+		    prev[u] = v;
+		}
+	    }
+	}
+    }
+    
 }
