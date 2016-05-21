@@ -147,36 +147,27 @@ void ShortestPath_Dijekstra(struct graph *g, int src, int *d, int *prev)
     g->visited[src] = 0;
     heap_insert(prio_q, d[src], src);
     
-    
-   /* for (v = 1; v <= g->nvertices; v++) {
-	    printf("add in idx %d\n", prio_q->Vtoidx[v]);
-	    printf("ver %d way %d\n", v, prio_q->nodes[prio_q->Vtoidx[v]].key);
-    }*/
-    
     struct heapnode node;
-    
+    int tmp;
     for (v = 1; v <= g->nvertices; v++) {
 	node = heap_extract_min(prio_q);
-	printf("vertices %d\n\n", node.value);
-	g->visited[node.value] = 1;
-	
+	tmp = node.value;
+	g->visited[tmp] = 1;
+	printf("vert %d\n\n", v);
+	printf("min prio %d to vert %d\n", node.key, node.value);
+
 	for (int u  = 1; u <= g->nvertices; u++) {
-	    printf ("sm vert %d\n", u);
-	    int way = graph_get_edge(g, v, u);
-	    printf("way v=%d - u=%d == %d\n", v, u, way);
-	    printf("visited sm vert %d\n\n", g->visited[u]);
+	    
+	    int way = graph_get_edge(g, tmp, u);
 	    if ((way != 0) && (g->visited[u] != 1)) {
-		if (d[v] + way < d[u]) {
-		    d[u] = d[v] + way;
-		    printf("du do %d\n", prio_q->nodes[prio_q->Vtoidx[u]].key);
+		printf("sm ne pos vert %d\nway %d\n", u, way);
+		if (d[tmp] + way < d[u]) {
+		    d[u] = d[tmp] + way;
+		    printf("path do %d = %d\n", u, d[u]);
 		    heap_decrease_key(prio_q, u, d[u]);
-		    printf("v %d in idx %d\n", u, prio_q->Vtoidx[u]);
-		    printf("du posle %d\n", prio_q->nodes[prio_q->Vtoidx[u]].key);
-		    printf("v=%d - u=%d == d[u] = %d\n\n",v, u, d[u]);		    
 		    prev[u] = v;
 		}
 	    }
 	}
     }
-    
 }
