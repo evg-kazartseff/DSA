@@ -122,6 +122,7 @@ struct g_path *Serch_Shortest_Path(struct graph *g, int src, int dest)
 	j--;
     }
     p->path[j] = src;
+    
     free(prev);
     free(d);
 
