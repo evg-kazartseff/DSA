@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "graph.h"
-#include <binary_heap.h>
+#include "binary_heap.h"
 
 int main ()
 {
@@ -19,11 +19,18 @@ int main ()
     int *prev = malloc(g->nvertices * sizeof(int));
     int *d = malloc(g->nvertices * sizeof(int));
     
-    ShortestPath_Dijekstra(g, 1, d, prev);
+    struct g_path *path;
     
-    for(int i = 1; i <= g->nvertices; i++) {
-	printf("prev %d - %d\n", i, prev[i]);
-	printf("dl%d %d\n", i, d[i]);
+    for (int i = 2; i <= g->nvertices; i++) {
+	printf("Min path from 1 to %d\n", i);
+	path = Serch_Shortest_Path(g, 1, i);
+	printf("partlen: %d\n", path->pathlen);
+	printf("path ");
+	for (int j = 0; j <= path->edge; j++) {
+	    printf("%d ", path->path[j]);
+	}
+	printf("\n\n");
     }
+    
     return 0;
 }
