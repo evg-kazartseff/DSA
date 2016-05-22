@@ -165,7 +165,7 @@ void ShortestPath_Dijekstra(struct graph *g, int src, int *d, int *prev)
 		    d[u] = d[tmp] + way;
 		    printf("path do %d = %d\n", u, d[u]);
 		    heap_decrease_key(prio_q, u, d[u]);
-		    prev[u] = v;
+		    prev[u] = tmp;
 		}
 	    }
 	}
