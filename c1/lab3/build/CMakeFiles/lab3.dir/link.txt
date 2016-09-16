@@ -1,0 +1,1 @@
+/usr/bin/cc     CMakeFiles/lab3.dir/src/binary_heap.c.o CMakeFiles/lab3.dir/src/graph.c.o CMakeFiles/lab3.dir/src/llist.c.o CMakeFiles/lab3.dir/src/main.c.o CMakeFiles/lab3.dir/src/queue.c.o  -o lab3 -rdynamic 
