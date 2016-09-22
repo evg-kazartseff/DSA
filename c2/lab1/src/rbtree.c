@@ -24,15 +24,15 @@ struct rbtree *rbtree_create(struct rbtree *parent, int key, char *value)
 
 struct rbtree *rbtree_add(struct rbtree *root, int key, char *value)
 {
-    struct rbtree *node, *parent =NullNode ;
+    struct rbtree *node, *parent = NullNode;
 
     /* Отыскиваем листовой узел */
-    for (node = root; node != NULL && node != NULL;) {
+    for (node = root; node != NullNode && node != NULL;) {
       parent = node;
-      if (key < parent->key)
-          node = parent->left;
-      else if (key > parent->key)
-          node = parent->right;
+      if (key < node->key)
+          node = node->left;
+      else if (key > node->key)
+          node = node->right;
       else
           return root;
     }
@@ -40,17 +40,14 @@ struct rbtree *rbtree_add(struct rbtree *root, int key, char *value)
     /* Создаем элемент и связываем с узлом */
     node = rbtree_create(parent, key, value);
     if (parent != NullNode) {
-	    if (key < parent->key) {
+	    if (key < parent->key)
 	        parent->left = node;
-	    }
-      else {
+        else
 	        parent->right = node;
-	    }
     }
-    else {
+    else
 	    root = node;
-    }
-    rbtree_fixup_add(root, node);
+    root = rbtree_fixup_add(root, node);
     return root;
 }
 
@@ -167,8 +164,6 @@ struct rbtree *rbtree_right_rotate(struct rbtree *root, struct rbtree *node)
         node->parent = left;
     return root;
 }
-
-
 
 struct rbtree *rbtree_lookup(struct rbtree *tree, int key)
 {
